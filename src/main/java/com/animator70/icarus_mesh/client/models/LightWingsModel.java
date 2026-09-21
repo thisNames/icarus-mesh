@@ -34,7 +34,7 @@ public class LightWingsModel<T extends LivingEntity> extends WingEntityModel<T> 
                 .addOrReplaceChild(
                         "rWingMain",
                         CubeListBuilder.create(),
-                        PartPose.offsetAndRotation(8.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.836332F));
+                        PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.836332F));
 
         modelPartData1.addOrReplaceChild(
                 "rWing01",
@@ -76,7 +76,7 @@ public class LightWingsModel<T extends LivingEntity> extends WingEntityModel<T> 
                 .addOrReplaceChild(
                         "lWingMain",
                         CubeListBuilder.create(),
-                        PartPose.offsetAndRotation(-8.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.836332F));
+                        PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.836332F));
 
         modelPartData2.addOrReplaceChild(
                 "lWing01",

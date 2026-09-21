@@ -48,7 +48,7 @@ public class FlandresWingsModel<T extends LivingEntity> extends WingEntityModel<
                         CubeListBuilder.create()
                                 .texOffs(11, 0)
                                 .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 3.0F, 6.0F),
-                        PartPose.offsetAndRotation(-6.0F, 0.0F, 0.0F, 0.0F, 1.5708F, 0.436332F));
+                        PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 1.5708F, 0.436332F));
 
         PartDefinition modelPartData2 = modelPartData1.addOrReplaceChild(
                 "leftWing02",
@@ -402,7 +402,7 @@ public class FlandresWingsModel<T extends LivingEntity> extends WingEntityModel<
                         CubeListBuilder.create()
                                 .texOffs(11, 0)
                                 .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 3.0F, 6.0F, true),
-                        PartPose.offsetAndRotation(6.0F, 0.0F, 0.0F, 0.0F, -1.5708F, -0.436332F));
+                        PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, -0.436332F));
 
         PartDefinition modelPartData15 = modelPartData14.addOrReplaceChild(
                 "rightWing02",

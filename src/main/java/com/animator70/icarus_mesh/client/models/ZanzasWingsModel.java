@@ -37,7 +37,7 @@ public class ZanzasWingsModel<T extends LivingEntity> extends WingEntityModel<T>
                         CubeListBuilder.create()
                                 .texOffs(0, 18)
                                 .addBox(0.0F, -5.0F, 0.25F, 14.0F, 15.0F, 0.0F),
-                        PartPose.offsetAndRotation(-6.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.436332F));
+                        PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.436332F));
 
         PartDefinition modelPartData2 = modelPartData1.addOrReplaceChild(
                 "lWing02",
@@ -65,7 +65,7 @@ public class ZanzasWingsModel<T extends LivingEntity> extends WingEntityModel<T>
                         CubeListBuilder.create()
                                 .texOffs(0, 18)
                                 .addBox(-14.0F, -5.0F, 0.25F, 14.0F, 15.0F, 0.0F, true),
-                        PartPose.offsetAndRotation(6.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.436332F));
+                        PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.436332F));
 
         PartDefinition modelPartData5 = modelPartData4.addOrReplaceChild(
                 "rWing02",

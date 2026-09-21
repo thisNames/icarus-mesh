@@ -74,7 +74,7 @@ public class WingEntityModel<T extends LivingEntity> extends AgeableListModel<T>
         float b = 0.1F; // 扇动幅度
         float k = 0.4F; // 绕 X 轴旋转（上下扇）
         float l = -0.5F; // 绕 Z 轴旋转（前后摆）
-        float m = -1.0F; // 翅膀根部高度
+        float m = 2.0F; // 翅膀根部高度（数值越小翅膀越往上、越靠近头部）
         float n = 0.0F; // 绕 Y 轴旋转（水平摆）
 
         // 如果实体是飞行状态，则根据下落速度把翅膀逐渐收拢，并根据飞行速度快速、大幅扇动
@@ -110,15 +110,15 @@ public class WingEntityModel<T extends LivingEntity> extends AgeableListModel<T>
             state = State.CROUCHING;
 
             k = 0.7F;
-            m = 0.0F;
+            m = 3.0F;
             n = 0.09F;
         }
 
         // 正弦波叠加：让翅膀绕 X 轴周期性上下摆动，即「扇动」效果
         k += Mth.sin(entity.tickCount * a) * b;
 
-        // 设定翅膀根部的锚点位置（左翼在 +x，右翼稍后镜像到 -x）
-        this.leftWing.x = 7.0F;
+        // 设定翅膀根部的锚点位置：x 由 getWingAnchorX() 决定（各子模型对齐各自翅膀根），右翼稍后镜像到 -x
+        this.leftWing.x = getWingAnchorX();
         this.leftWing.y = m;
 
         // 如果实体是玩家，则把 elytraRot 字段写入玩家实体，并做 0.1 平滑插值
@@ -147,6 +147,16 @@ public class WingEntityModel<T extends LivingEntity> extends AgeableListModel<T>
 
         this.rightWing.xRot = this.leftWing.xRot;
         this.rightWing.zRot = -this.leftWing.zRot;
+    }
+
+    /**
+     * 翅膀旋转锚点的 X 位置（单位：模型像素）。
+     * 默认 1 对应大部分翅膀（羽翼/龙翼/芙兰/Discord/Zanza）的翅膀根；
+     * 光翼（LightWingsModel）的翅膀根在 -1，由它覆盖此方法。
+     * 把锚点对齐翅膀根后，扇动时翅膀根就不会跟着位移。
+     */
+    protected float getWingAnchorX() {
+        return 3.0F;
     }
 
     @Override

@@ -51,7 +51,7 @@ public class LeatherWingsModel<T extends LivingEntity> extends WingEntityModel<T
                         CubeListBuilder.create()
                                 .texOffs(21, 0)
                                 .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 4.0F, 5.0F),
-                        PartPose.offsetAndRotation(-6.0F, 0.0F, 0.0F, 0.0F, 1.5708F, 0.436332F));
+                        PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 1.5708F, 0.436332F));
 
         PartDefinition modelPartData2 = modelPartData1.addOrReplaceChild(
                 "leftWing02",
@@ -151,7 +151,7 @@ public class LeatherWingsModel<T extends LivingEntity> extends WingEntityModel<T
                         CubeListBuilder.create()
                                 .texOffs(21, 0)
                                 .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 4.0F, 5.0F, true),
-                        PartPose.offsetAndRotation(6.0F, 0.0F, 0.0F, 0.0F, -1.5708F, -0.436332F));
+                        PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, -0.436332F));
 
         PartDefinition modelPartData10 = modelPartData9.addOrReplaceChild(
                 "rightWing02",

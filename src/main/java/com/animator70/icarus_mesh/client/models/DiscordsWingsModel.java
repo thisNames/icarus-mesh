@@ -51,7 +51,7 @@ public class DiscordsWingsModel<T extends LivingEntity> extends WingEntityModel<
                         CubeListBuilder.create()
                                 .texOffs(0, 0)
                                 .addBox(-1.0F, -2.0F, -1.0F, 2.0F, 4.0F, 6.0F),
-                        PartPose.offsetAndRotation(-6.0F, 0.0F, 0.0F, 0.0F, 1.5708F, 0.436332F));
+                        PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 1.5708F, 0.436332F));
 
         PartDefinition modelPartData2 = modelPartData1.addOrReplaceChild(
                 "leftWing02",
@@ -112,7 +112,7 @@ public class DiscordsWingsModel<T extends LivingEntity> extends WingEntityModel<
                         CubeListBuilder.create()
                                 .texOffs(66, 0)
                                 .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 4.0F, 5.0F, true),
-                        PartPose.offsetAndRotation(6.0F, 0.0F, 0.0F, 0.0F, -1.5708F, -0.436332F));
+                        PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, -0.436332F));
 
         PartDefinition modelPartData8 = modelPartData7.addOrReplaceChild(
                 "rightWing02",
