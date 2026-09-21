@@ -12,53 +12,44 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 
 // Java 类
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * 设置翅膀的网络包
- * SetWingsPacket
+ * 同步翅膀队列的网络包（服务端 → 客户端）。
+ * 客户端收到后，把实体的翅膀队列整体替换为该队列。
  */
 public class SetWingsPacket {
     // 实体 id
     private final int entityId;
-    // 翅膀 id
-    private final String wingId;
+    // 翅膀队列（队首在前）
+    private final List<String> wingQueue;
 
     /**
-     * 设置翅膀的网络包
-     * 
-     * @param entityId 实体 id
-     * @param wingId   翅膀 id
+     * @param entityId  实体 id
+     * @param wingQueue 翅膀队列（队首在前）
      */
-    public SetWingsPacket(int entityId, String wingId) {
+    public SetWingsPacket(int entityId, List<String> wingQueue) {
         this.entityId = entityId;
-        this.wingId = wingId;
+        this.wingQueue = wingQueue;
     }
 
-    /**
-     * 编码/解码
-     * 
-     * @param msg 消息
-     * @param buf 缓冲区
-     */
     public static void encode(SetWingsPacket msg, FriendlyByteBuf buf) {
         buf.writeInt(msg.entityId);
-        buf.writeUtf(msg.wingId);
+        buf.writeCollection(msg.wingQueue, FriendlyByteBuf::writeUtf);
     }
 
-    /**
-     * 解码
-     * 
-     * @param buf 缓冲区
-     * @return
-     */
     public static SetWingsPacket decode(FriendlyByteBuf buf) {
-        return new SetWingsPacket(buf.readInt(), buf.readUtf());
+        int entityId = buf.readInt();
+        List<String> queue = buf.readCollection(ArrayList::new, FriendlyByteBuf::readUtf);
+
+        return new SetWingsPacket(entityId, queue);
     }
 
     /**
-     * 在客户端接收：按实体 id 找到实体，把翅膀 id 写入其 Capability（供渲染层读取）
-     * enqueueWork 会把任务切回主线程执行；多次判空避免实体未加载时崩溃
+     * 在客户端接收：按实体 id 找到实体，把翅膀队列写入其 Capability（供渲染层读取）。
+     * enqueueWork 会把任务切回主线程执行；多次判空避免实体未加载时崩溃。
      */
     public static void handle(SetWingsPacket msg, Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context context = ctx.get();
@@ -71,7 +62,8 @@ public class SetWingsPacket {
                     Entity entity = mc.level.getEntity(msg.entityId);
 
                     if (entity != null) {
-                        entity.getCapability(WingsCapability.CAPABILITY).ifPresent(cap -> cap.setWingId(msg.wingId));
+                        entity.getCapability(WingsCapability.CAPABILITY)
+                                .ifPresent(cap -> cap.setWingQueue(msg.wingQueue));
                     }
                 }
             }

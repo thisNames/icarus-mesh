@@ -44,6 +44,7 @@ public class WingsLayer<T extends LivingEntity, M extends EntityModel<T>> extend
     public WingsLayer(RenderLayerParent<T, M> context, EntityModelSet loader) {
         super(context);
 
+        // 6 套翅膀模型
         this.featheredWings = new FeatheredWingsModel<>(loader.bakeLayer(IcarusMeshModels.FEATHERED));
         this.leatherWings = new LeatherWingsModel<>(loader.bakeLayer(IcarusMeshModels.LEATHER));
         this.lightWings = new LightWingsModel<>(loader.bakeLayer(IcarusMeshModels.LIGHT));
@@ -76,7 +77,7 @@ public class WingsLayer<T extends LivingEntity, M extends EntityModel<T>> extend
             }
 
             // 通过翅膀 id 查注册表得到模型/贴图/颜色
-            WingDefinition definition = WingsRegistry.get(cap.getWingId());
+            WingDefinition definition = WingsRegistry.get(cap.getCurrentWingId());
 
             // 如果注册表中没有该翅膀，直接返回
             if (definition == null) {

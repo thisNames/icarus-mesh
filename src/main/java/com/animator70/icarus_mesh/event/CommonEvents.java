@@ -47,7 +47,7 @@ public class CommonEvents {
         // 将新登录玩家自己的翅膀同步给所有追踪者（含自身）
         WingsCapability.get(player).ifPresent(cap -> {
             if (cap.hasWings()) {
-                IcarusMeshNetworking.sendToAll(new SetWingsPacket(player.getId(), cap.getWingId()));
+                IcarusMeshNetworking.sendToAll(new SetWingsPacket(player.getId(), cap.getWingQueue()));
             }
         });
 
@@ -59,7 +59,7 @@ public class CommonEvents {
 
             WingsCapability.get(other).ifPresent(cap -> {
                 if (cap.hasWings()) {
-                    IcarusMeshNetworking.sendToPlayer(new SetWingsPacket(other.getId(), cap.getWingId()), player);
+                    IcarusMeshNetworking.sendToPlayer(new SetWingsPacket(other.getId(), cap.getWingQueue()), player);
                 }
             });
         }
@@ -75,7 +75,7 @@ public class CommonEvents {
         if (target instanceof Player) {
             WingsCapability.get(target).ifPresent(cap -> {
                 if (cap.hasWings()) {
-                    IcarusMeshNetworking.sendToPlayer(new SetWingsPacket(target.getId(), cap.getWingId()),
+                    IcarusMeshNetworking.sendToPlayer(new SetWingsPacket(target.getId(), cap.getWingQueue()),
                             (ServerPlayer) event.getEntity());
                 }
             });
