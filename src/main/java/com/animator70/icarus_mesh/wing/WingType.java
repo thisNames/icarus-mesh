@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 public enum WingType {
     // 翅膀类型枚举（第二个参数为渲染缩放：龙翼偏大、光翼偏小，1.0 为默认大小）
     FEATHERED("feathered", 1.0F),
-    DRAGON("dragon", 1.25F),
+    DRAGON("dragon", 1.15F),
     MECHANICAL_FEATHERED("mechanical_feathered", 1.0F),
     MECHANICAL_LEATHER("mechanical_leather", 1.15F),
     LIGHT("light", 0.85F),

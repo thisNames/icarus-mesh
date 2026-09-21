@@ -99,16 +99,20 @@ public class WingsLayer<T extends LivingEntity, M extends EntityModel<T>> extend
             // 把翅膀整体向玩家背后偏移，避免嵌入身体
             matrices.translate(0.0D, 0.0D, WING_OFFSET_Z);
 
-            // 应用该翅膀类型的缩放（龙翼偏大、光翼偏小）
-            float scale = definition.type().getScale();
-
-            matrices.scale(scale, scale, scale);
-
             // 复制父模型姿态（如潜行/年轻等），并计算本帧扇动动画
             this.getParentModel().copyPropertiesTo(wingModel);
 
-            // 设置翅膀动画
+            // 设置翅膀动画（此时翅膀根 pivot 已就位，leftWing.y 即翅膀根高度）
             wingModel.setupAnim(entity, limbAngle, limbDistance, animationProgress, headYaw, headPitch);
+
+            // 绕翅膀根高度缩放：先把原点移到翅膀根高度，缩放，再移回。
+            // 这样缩放锚点在翅膀根部（x 取左右翼对称中线），极端缩放（3 倍等）时翅膀根高度不漂移
+            float scale = definition.type().getScale();
+            float anchorY = wingModel.leftWing.y;
+
+            matrices.translate(0.0D, anchorY, 0.0D);
+            matrices.scale(scale, scale, scale);
+            matrices.translate(0.0D, -anchorY, 0.0D);
 
             // 先渲染副色层，再渲染主色层（与原版 Icarus 一致）
             VertexConsumer buffer2 = vertexConsumers

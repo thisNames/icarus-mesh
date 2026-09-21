@@ -37,22 +37,6 @@ public class CommonEvents {
     }
 
     /**
-     * 玩家死亡重生时，把旧实体的翅膀复制到新实体。
-     * reviveCaps/invalidateCaps 必须成对调用：先「复活」旧实体能力以便读取，再作废防止泄漏
-     */
-    @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
-        if (event.isWasDeath()) {
-            event.getOriginal().reviveCaps();
-
-            WingsCapability.get(event.getOriginal()).ifPresent(
-                    old -> WingsCapability.get(event.getEntity()).ifPresent(neu -> neu.setWingId(old.getWingId())));
-
-            event.getOriginal().invalidateCaps();
-        }
-    }
-
-    /**
      * 玩家登录时做双向同步：把该玩家翅膀广播给所有人，再把其他人的翅膀补发给该玩家
      * 数据包是「即时推送」，后进服的人收不到历史数据，所以登录时需要补发
      */

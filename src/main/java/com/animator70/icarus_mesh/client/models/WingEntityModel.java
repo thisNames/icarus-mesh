@@ -74,7 +74,7 @@ public class WingEntityModel<T extends LivingEntity> extends AgeableListModel<T>
         float b = 0.1F; // 扇动幅度
         float k = 0.4F; // 绕 X 轴旋转（上下扇）
         float l = -0.5F; // 绕 Z 轴旋转（前后摆）
-        float m = 2.0F; // 翅膀根部高度（数值越小翅膀越往上、越靠近头部）
+        float m = 0F; // 翅膀根部高度（数值越小翅膀越往上、越靠近头部）
         float n = 0.0F; // 绕 Y 轴旋转（水平摆）
 
         // 如果实体是飞行状态，则根据下落速度把翅膀逐渐收拢，并根据飞行速度快速、大幅扇动
