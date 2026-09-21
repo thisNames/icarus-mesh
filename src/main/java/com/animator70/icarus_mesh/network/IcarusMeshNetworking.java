@@ -24,7 +24,7 @@ public class IcarusMeshNetworking {
     private static int id = 0;
 
     /**
-     * 网络通道：版本号「1」用于服务端/客户端握手校验，不一致则拒绝通信。
+     * 网络通道：版本号「1」用于服务端/客户端握手校验，不一致则拒绝通信
      */
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(IcarusMesh.MODID, "main"),
@@ -34,6 +34,9 @@ public class IcarusMeshNetworking {
     public static void init() {
         CHANNEL.registerMessage(id++, SetWingsPacket.class, SetWingsPacket::encode, SetWingsPacket::decode,
                 SetWingsPacket::handle);
+
+        CHANNEL.registerMessage(id++, SyncWingsConfigPacket.class, SyncWingsConfigPacket::encode,
+                SyncWingsConfigPacket::decode, SyncWingsConfigPacket::handle);
     }
 
     /**
@@ -47,6 +50,13 @@ public class IcarusMeshNetworking {
      * 发送给指定玩家
      */
     public static void sendToPlayer(SetWingsPacket packet, ServerPlayer player) {
+        CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
+    }
+
+    /**
+     * 发送渲染配置快照给指定玩家
+     */
+    public static void sendConfigToPlayer(SyncWingsConfigPacket packet, ServerPlayer player) {
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
     }
 

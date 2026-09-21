@@ -2,6 +2,7 @@ package com.animator70.icarus_mesh.client;
 
 // 我的类
 import com.animator70.icarus_mesh.capability.WingsCapability;
+import com.animator70.icarus_mesh.config.WingsRenderConfig;
 import com.animator70.icarus_mesh.init.WingsRegistry;
 import com.animator70.icarus_mesh.wing.WingDefinition;
 import com.animator70.icarus_mesh.wing.WingType;
@@ -30,9 +31,6 @@ import net.minecraft.world.entity.LivingEntity;
  * @param <M> 实体模型类型
  */
 public class WingsLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
-    // 翅膀整体离玩家背后的偏移量（单位：格）。原版为 0.125，翅膀根部会嵌入身体，这里增大到 0.3
-    private static final double WING_OFFSET_Z = 0.3D;
-
     // 6 套翅膀
     private final FeatheredWingsModel<T> featheredWings;
     private final LeatherWingsModel<T> leatherWings;
@@ -84,13 +82,18 @@ public class WingsLayer<T extends LivingEntity, M extends EntityModel<T>> extend
                 return;
             }
 
+            WingType type = definition.type();
+
             // 根据翅膀类型选择对应的 3D 模型
-            WingEntityModel<T> wingModel = getModel(definition.type());
+            WingEntityModel<T> wingModel = getModel(type);
 
             // 如果没有对应的 3D 模型，直接返回
             if (wingModel == null) {
                 return;
             }
+
+            // 客户端渲染参数（服务端同步的快照，实现全服统一）
+            WingsRenderConfig cfg = ClientWingsConfig.get();
 
             // 取主/副颜色的 RGB（用于给翅膀贴图染色）
             float[] primary = definition.primaryColor().getTextureDiffuseColors();
@@ -98,22 +101,29 @@ public class WingsLayer<T extends LivingEntity, M extends EntityModel<T>> extend
 
             // 保存当前矩阵，用于恢复
             matrices.pushPose();
-            // 把翅膀整体向玩家背后偏移，避免嵌入身体
-            matrices.translate(0.0D, 0.0D, WING_OFFSET_Z);
+            // 应用配置里的位置偏移（X 左右 / Y 上下 / Z 前后，单位：格）
+            matrices.translate(cfg.offsetX(), cfg.offsetY(), cfg.offsetZ());
 
             // 复制父模型姿态（如潜行/年轻等），并计算本帧扇动动画
             this.getParentModel().copyPropertiesTo(wingModel);
+
+            // 注入该类型的渲染参数（头部距离/蹲下距离/间距），再计算扇动动画
+            wingModel.setRenderParams(
+                    (float) cfg.headDistance(type),
+                    (float) cfg.crouchHeadDistance(type),
+                    (float) cfg.wingSpacing(type));
 
             // 设置翅膀动画（此时翅膀根 pivot 已就位，leftWing.y 即翅膀根高度）
             wingModel.setupAnim(entity, limbAngle, limbDistance, animationProgress, headYaw, headPitch);
 
             // 绕翅膀根高度缩放：先把原点移到翅膀根高度，缩放，再移回。
             // 这样缩放锚点在翅膀根部（x 取左右翼对称中线），极端缩放（3 倍等）时翅膀根高度不漂移
-            float scale = definition.type().getScale();
+            // 缩放 = 该类型缩放 × 配置文件里的全局缩放乘数
+            double scale = cfg.scale(type) * cfg.globalScale();
             float anchorY = wingModel.leftWing.y;
 
             matrices.translate(0.0D, anchorY, 0.0D);
-            matrices.scale(scale, scale, scale);
+            matrices.scale((float) scale, (float) scale, (float) scale);
             matrices.translate(0.0D, -anchorY, 0.0D);
 
             // 先渲染副色层，再渲染主色层（与原版 Icarus 一致）

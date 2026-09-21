@@ -7,47 +7,41 @@ import com.animator70.icarus_mesh.IcarusMesh;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * 翅膀类型枚举（贴图路径 + 缩放）
- * 翅膀类型枚举（第二个参数为渲染缩放：龙翼偏大、光翼偏小，1.0 为默认大小）
- * 「贴图 + 颜色」的维度（8 个），模型是「形状」的维度（6 套），「机械」系列只是给同一个形状换了个金属质感的贴图
+ * 翅膀类型枚举（贴图路径）
+ * 「贴图 + 颜色」的维度（8 个），模型是「形状」的维度（6 套），「机械」系列只是给同一个形状换了个金属质感的贴图。
+ * 缩放、头部距离、间距等渲染参数不再硬编码在这里，统一由 config/icarus_mesh-client.toml 按类型配置。
  * WingType
  */
 public enum WingType {
     // 羽翼 FeatheredWingsModel
-    FEATHERED("feathered", 1.0F),
-    // 机械羽翼 FeatheredWingsModel（同一套）
-    DRAGON("dragon", 1.15F),
+    FEATHERED("feathered"),
     // 龙翼 LeatherWingsModel
-    MECHANICAL_FEATHERED("mechanical_feathered", 1.0F),
+    DRAGON("dragon"),
+    // 机械羽翼 FeatheredWingsModel（同一套）
+    MECHANICAL_FEATHERED("mechanical_feathered"),
     // 机械皮革翼 LeatherWingsModel（同一套）
-    MECHANICAL_LEATHER("mechanical_leather", 1.15F),
+    MECHANICAL_LEATHER("mechanical_leather"),
     // 光翼 LightWingsModel
-    LIGHT("light", 0.85F),
-    // 芙兰 LightWingsModel
-    FLANDRES("flandres", 1.0F),
+    LIGHT("light"),
     // 芙兰 FlandresWingsModel
-    DISCORDS("discords", 1.0F),
-    // Discord ZanzasWingsModel
-    ZANZAS("zanzas", 1.0F);
+    FLANDRES("flandres"),
+    // Discord DiscordsWingsModel
+    DISCORDS("discords"),
+    // Zanza ZanzasWingsModel
+    ZANZAS("zanzas");
 
     // 翅膀纹理路径
     private final ResourceLocation textureLayer1;
     private final ResourceLocation textureLayer2;
 
-    // 翅膀渲染缩放（1.0 = 默认大小）
-    private final float scale;
-
     /**
      * 翅膀类型构造器
      * 
-     * @param name  翅膀类型名称
-     * @param scale 翅膀渲染缩放（1.0 = 默认大小）
+     * @param name 翅膀类型名称
      */
-    WingType(String name, float scale) {
+    WingType(String name) {
         this.textureLayer1 = IcarusMesh.id("textures/entity/" + name + "_wings.png");
         this.textureLayer2 = IcarusMesh.id("textures/entity/" + name + "_wings_2.png");
-
-        this.scale = scale;
     }
 
     /**
@@ -66,14 +60,5 @@ public enum WingType {
      */
     public ResourceLocation getTextureLayer2() {
         return this.textureLayer2;
-    }
-
-    /**
-     * 获取翅膀渲染缩放
-     * 
-     * @return 缩放值（1.0 = 默认大小）
-     */
-    public float getScale() {
-        return this.scale;
     }
 }

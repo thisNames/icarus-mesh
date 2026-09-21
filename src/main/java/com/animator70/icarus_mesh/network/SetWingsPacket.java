@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * 同步翅膀队列的网络包（服务端 → 客户端）。
- * 客户端收到后，把实体的翅膀队列整体替换为该队列。
+ * 同步翅膀队列的网络包（服务端 → 客户端）
+ * 客户端收到后，把实体的翅膀队列整体替换为该队列
  */
 public class SetWingsPacket {
     // 实体 id

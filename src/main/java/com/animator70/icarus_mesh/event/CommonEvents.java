@@ -4,8 +4,10 @@ package com.animator70.icarus_mesh.event;
 import com.animator70.icarus_mesh.IcarusMesh;
 import com.animator70.icarus_mesh.capability.WingsCapability;
 import com.animator70.icarus_mesh.command.WingsCommand;
+import com.animator70.icarus_mesh.config.WingsRenderConfig;
 import com.animator70.icarus_mesh.network.IcarusMeshNetworking;
 import com.animator70.icarus_mesh.network.SetWingsPacket;
+import com.animator70.icarus_mesh.network.SyncWingsConfigPacket;
 
 // Minecraft 类
 import net.minecraft.nbt.CompoundTag;
@@ -45,6 +47,7 @@ public class CommonEvents {
     public static void onPlayerLoad(PlayerEvent.LoadFromFile event) {
         event.getEntity().getCapability(WingsCapability.CAPABILITY).ifPresent(cap -> {
             CompoundTag data = event.getEntity().getPersistentData();
+
             if (data.contains("icarus_mesh_wings", Tag.TAG_COMPOUND)) {
                 cap.deserializeNBT(data.getCompound("icarus_mesh_wings"));
             }
@@ -86,6 +89,10 @@ public class CommonEvents {
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
+
+        // 同步渲染配置（全局 COMMON 配置 → 客户端，实现全服统一）
+        IcarusMeshNetworking.sendConfigToPlayer(
+                new SyncWingsConfigPacket(WingsRenderConfig.snapshotFromConfig().toArray()), player);
 
         // 将新登录玩家自己的翅膀同步给所有追踪者（含自身）
         WingsCapability.get(player).ifPresent(cap -> {
