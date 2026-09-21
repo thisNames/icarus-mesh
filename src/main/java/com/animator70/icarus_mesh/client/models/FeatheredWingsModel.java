@@ -14,7 +14,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * 翅膀模型
+ * 翅膀模型：羽翼
  * FeatheredWingsModel
  * 
  * @param <T> LivingEntity

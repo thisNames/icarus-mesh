@@ -7,7 +7,7 @@ import com.animator70.icarus_mesh.IcarusMesh;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * 翅膀类型
+ * 翅膀类型枚举（贴图路径 + 缩放）
  * WingType
  */
 public enum WingType {

@@ -14,7 +14,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * 翅膀模型
+ * 翅膀模型：Zanza 之翼
  * ZanzasWingsModel
  * 
  * @param <T> LivingEntity

@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * 翅膀模型
+ * 翅膀模型：芙兰之翼
  * FlandresWingsModel
  * 
  * @param <T> LivingEntity

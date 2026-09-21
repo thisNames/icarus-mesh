@@ -14,6 +14,7 @@ import java.util.Map;
 
 /**
  * 翅膀注册表
+ * 83 个翅膀的注册表
  * WingsRegistry
  */
 public class WingsRegistry {

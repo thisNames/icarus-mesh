@@ -20,8 +20,14 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.Mth;
 
 /**
- * 翅膀模型
+ * 翅膀模型：翅膀主体类（基类）
  * WingEntityModel
+ * ├── FeatheredWingsModel（羽翼）
+ * ├── LeatherWingsModel（皮革/龙翼）
+ * ├── LightWingsModel（光翼）
+ * ├── FlandresWingsModel（芙兰之翼）
+ * ├── DiscordsWingsModel（Discord 之翼）
+ * └── ZanzasWingsModel（Zanza 之翼）
  * 
  * @param <T> LivingEntity
  */

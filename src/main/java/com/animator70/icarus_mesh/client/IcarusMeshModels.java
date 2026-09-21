@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 
 /**
  * 翅膀模型
+ * 模型层的 ModelLayerLocation 注册
  * IcarusMeshModels
  */
 public class IcarusMeshModels {

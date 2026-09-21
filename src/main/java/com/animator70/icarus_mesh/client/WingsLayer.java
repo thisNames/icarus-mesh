@@ -23,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 /**
  * 翅膀渲染层
+ * 渲染层（读 Capability → 选模型 → 渲染）
  * WingsLayer
  * 
  * @param <T> 实体类型
