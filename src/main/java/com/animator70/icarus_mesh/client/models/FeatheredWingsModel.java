@@ -26,10 +26,16 @@ public class FeatheredWingsModel<T extends LivingEntity> extends WingEntityModel
     public FeatheredWingsModel(ModelPart root) {
         super(root);
 
-        this.leftWing03 = root.getChild("leftWing").getChild("leftWing01").getChild("leftWing02")
+        this.leftWing03 = root
+                .getChild("leftWing")
+                .getChild("leftWing01")
+                .getChild("leftWing02")
                 .getChild("leftWing03");
 
-        this.rightWing03 = root.getChild("rightWing").getChild("rightWing01").getChild("rightWing02")
+        this.rightWing03 = root
+                .getChild("rightWing")
+                .getChild("rightWing01")
+                .getChild("rightWing02")
                 .getChild("rightWing03");
     }
 
