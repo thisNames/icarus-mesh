@@ -8,17 +8,26 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * 翅膀类型枚举（贴图路径 + 缩放）
+ * 翅膀类型枚举（第二个参数为渲染缩放：龙翼偏大、光翼偏小，1.0 为默认大小）
+ * 「贴图 + 颜色」的维度（8 个），模型是「形状」的维度（6 套），「机械」系列只是给同一个形状换了个金属质感的贴图
  * WingType
  */
 public enum WingType {
-    // 翅膀类型枚举（第二个参数为渲染缩放：龙翼偏大、光翼偏小，1.0 为默认大小）
+    // 羽翼 FeatheredWingsModel
     FEATHERED("feathered", 1.0F),
+    // 机械羽翼 FeatheredWingsModel（同一套）
     DRAGON("dragon", 1.15F),
+    // 龙翼 LeatherWingsModel
     MECHANICAL_FEATHERED("mechanical_feathered", 1.0F),
+    // 机械皮革翼 LeatherWingsModel（同一套）
     MECHANICAL_LEATHER("mechanical_leather", 1.15F),
+    // 光翼 LightWingsModel
     LIGHT("light", 0.85F),
+    // 芙兰 LightWingsModel
     FLANDRES("flandres", 1.0F),
+    // 芙兰 FlandresWingsModel
     DISCORDS("discords", 1.0F),
+    // Discord ZanzasWingsModel
     ZANZAS("zanzas", 1.0F);
 
     // 翅膀纹理路径

@@ -35,6 +35,33 @@
 
 ---
 
+## 翅膀结构
+
+本模组有 3 个层级：**模型（形状）→ 种类（贴图）→ 条目（颜色变体）**。
+
+| 层级 | 数量 | 说明 |
+|---|---|---|
+| 模型（3D 形状） | 6 套 | 羽翼、皮革、光翼、芙兰、Discord、Zanza |
+| 种类（贴图） | 8 种 | 上面 6 种 + 机械羽翼、机械皮革翼（复用模型、换贴图） |
+| 条目（可 `/wings set`） | 83 个 | 5 种可染色类型 × 16 色 + 3 独特 |
+
+**8 个种类 → 6 套模型** 的映射：
+
+| 种类（WingType） | 使用的模型 |
+|---|---|
+| FEATHERED（羽翼） | FeatheredWingsModel |
+| MECHANICAL_FEATHERED（机械羽翼） | FeatheredWingsModel（同一套） |
+| DRAGON（龙翼） | LeatherWingsModel |
+| MECHANICAL_LEATHER（机械皮革翼） | LeatherWingsModel（同一套） |
+| LIGHT（光翼） | LightWingsModel |
+| FLANDRES（芙兰） | FlandresWingsModel |
+| DISCORDS（Discord） | DiscordsWingsModel |
+| ZANZAS（Zanza） | ZanzasWingsModel |
+
+> 其中「机械羽翼 / 机械皮革翼」只是给「羽翼 / 龙翼」换了个金属质感的贴图，形状完全一样。
+
+---
+
 ## 翅膀缩放值
 
 | 翅膀类型 | 缩放值 | 相对大小 |
