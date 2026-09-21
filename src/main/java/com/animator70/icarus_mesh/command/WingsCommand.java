@@ -92,10 +92,11 @@ public class WingsCommand {
             return 0;
         }
 
-        // 入队（重复无效），并同步完整队列
+        // 入队（重复无效），并同步完整队列 + 持久化
         WingsCapability.get(target).ifPresent(cap -> {
             boolean added = cap.addWing(wingId);
 
+            WingsCapability.syncPersistentData(target);
             IcarusMeshNetworking.sendToTrackingAndSelf(new SetWingsPacket(target.getId(), cap.getWingQueue()), target);
 
             if (added) {
@@ -113,9 +114,10 @@ public class WingsCommand {
      * 清空玩家的翅膀（指令调用）
      */
     private static int clearWing(CommandSourceStack source, ServerPlayer target) {
-        // 清空整个队列，并同步
+        // 清空整个队列，并同步 + 持久化
         WingsCapability.get(target).ifPresent(cap -> {
             cap.clearWings();
+            WingsCapability.syncPersistentData(target);
             IcarusMeshNetworking.sendToTrackingAndSelf(new SetWingsPacket(target.getId(), cap.getWingQueue()), target);
         });
 
@@ -128,9 +130,10 @@ public class WingsCommand {
      * 移除玩家的翅膀（指令调用）
      */
     private static int removeWing(CommandSourceStack source, ServerPlayer target, String wingId) {
-        // 按 id 出队，并同步完整队列
+        // 按 id 出队，并同步完整队列 + 持久化
         WingsCapability.get(target).ifPresent(cap -> {
             boolean removed = cap.removeWing(wingId);
+            WingsCapability.syncPersistentData(target);
             IcarusMeshNetworking.sendToTrackingAndSelf(new SetWingsPacket(target.getId(), cap.getWingQueue()), target);
 
             if (removed) {

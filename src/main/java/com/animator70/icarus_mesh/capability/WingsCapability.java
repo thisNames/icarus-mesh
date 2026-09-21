@@ -110,10 +110,47 @@ public class WingsCapability {
     }
 
     /**
+     * 序列化为 NBT（用于持久化到玩家存档）
+     */
+    public CompoundTag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
+        ListTag list = new ListTag();
+
+        for (String id : this.wingQueue) {
+            list.add(StringTag.valueOf(id));
+        }
+
+        tag.put("wingQueue", list);
+
+        return tag;
+    }
+
+    /**
+     * 从 NBT 反序列化（用于从玩家存档加载）
+     */
+    public void deserializeNBT(CompoundTag nbt) {
+        this.wingQueue.clear();
+
+        for (Tag entry : nbt.getList("wingQueue", Tag.TAG_STRING)) {
+            this.wingQueue.addLast(entry.getAsString());
+        }
+    }
+
+    /**
      * 获取实体的翅膀 Capability
      */
     public static LazyOptional<WingsCapability> get(Entity entity) {
         return entity.getCapability(CAPABILITY);
+    }
+
+    /**
+     * 把翅膀队列同步到玩家的 getPersistentData（会随 player.dat 自动保存）。
+     * 在每次队列变化（入队/出队/清空）后调用，确保存档始终是最新的。
+     */
+    public static void syncPersistentData(Player player) {
+        player.getCapability(CAPABILITY).ifPresent(cap -> {
+            player.getPersistentData().put("icarus_mesh_wings", cap.serializeNBT());
+        });
     }
 
     /**
@@ -140,24 +177,12 @@ public class WingsCapability {
 
         @Override
         public CompoundTag serializeNBT() {
-            CompoundTag tag = new CompoundTag();
-            ListTag list = new ListTag();
-
-            for (String id : this.instance.wingQueue) {
-                list.add(StringTag.valueOf(id));
-            }
-
-            tag.put("wingQueue", list);
-            return tag;
+            return this.instance.serializeNBT();
         }
 
         @Override
         public void deserializeNBT(CompoundTag nbt) {
-            this.instance.wingQueue.clear();
-
-            for (Tag entry : nbt.getList("wingQueue", Tag.TAG_STRING)) {
-                this.instance.wingQueue.addLast(entry.getAsString());
-            }
+            this.instance.deserializeNBT(nbt);
         }
     }
 }

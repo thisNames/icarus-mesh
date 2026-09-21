@@ -8,6 +8,8 @@ import com.animator70.icarus_mesh.network.IcarusMeshNetworking;
 import com.animator70.icarus_mesh.network.SetWingsPacket;
 
 // Minecraft 类
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -34,6 +36,47 @@ public class CommonEvents {
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         WingsCommand.register(event);
+    }
+
+    /**
+     * 玩家读档时：从 getPersistentData 恢复翅膀队列。
+     */
+    @SubscribeEvent
+    public static void onPlayerLoad(PlayerEvent.LoadFromFile event) {
+        event.getEntity().getCapability(WingsCapability.CAPABILITY).ifPresent(cap -> {
+            CompoundTag data = event.getEntity().getPersistentData();
+            if (data.contains("icarus_mesh_wings", Tag.TAG_COMPOUND)) {
+                cap.deserializeNBT(data.getCompound("icarus_mesh_wings"));
+            }
+        });
+    }
+
+    /**
+     * 玩家死亡重生时：清空翅膀队列，并同步清空 getPersistentData，
+     * 避免旧队列残留在存档里（退出重进后翅膀"复活"）。
+     */
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        if (event.isWasDeath()) {
+            event.getEntity().getCapability(WingsCapability.CAPABILITY).ifPresent(WingsCapability::clearWings);
+            WingsCapability.syncPersistentData(event.getEntity());
+        }
+    }
+
+    /**
+     * 玩家切换维度时：重新把翅膀队列同步给玩家自己 + 新维度的追踪者，
+     * 避免切换维度后客户端翅膀不渲染（队列其实还在）。
+     */
+    @SubscribeEvent
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+
+        WingsCapability.get(player).ifPresent(cap -> {
+            if (cap.hasWings()) {
+                IcarusMeshNetworking.sendToTrackingAndSelf(new SetWingsPacket(player.getId(), cap.getWingQueue()),
+                        player);
+            }
+        });
     }
 
     /**
