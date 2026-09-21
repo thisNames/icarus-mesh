@@ -98,6 +98,12 @@ public class WingsLayer<T extends LivingEntity, M extends EntityModel<T>> extend
             matrices.pushPose();
             // 把翅膀整体向玩家背后偏移，避免嵌入身体
             matrices.translate(0.0D, 0.0D, WING_OFFSET_Z);
+
+            // 应用该翅膀类型的缩放（龙翼偏大、光翼偏小）
+            float scale = definition.type().getScale();
+
+            matrices.scale(scale, scale, scale);
+
             // 复制父模型姿态（如潜行/年轻等），并计算本帧扇动动画
             this.getParentModel().copyPropertiesTo(wingModel);
 
