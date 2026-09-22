@@ -5,6 +5,7 @@ import com.animator70.icarus_mesh.IcarusMesh;
 import com.animator70.icarus_mesh.capability.WingsCapability;
 import com.animator70.icarus_mesh.command.WingsCommand;
 import com.animator70.icarus_mesh.config.WingsRenderConfig;
+import com.animator70.icarus_mesh.effect.WingEffect;
 import com.animator70.icarus_mesh.network.IcarusMeshNetworking;
 import com.animator70.icarus_mesh.network.SetWingsPacket;
 import com.animator70.icarus_mesh.network.SyncWingsConfigPacket;
@@ -13,12 +14,15 @@ import com.animator70.icarus_mesh.network.SyncWingsConfigPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 // Forge 类
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -130,5 +134,52 @@ public class CommonEvents {
                 }
             });
         }
+    }
+
+    /**
+     * 效果添加：玩家获得翅膀效果时，把对应翅膀入队。
+     */
+    @SubscribeEvent
+    public static void onEffectAdded(MobEffectEvent.Added event) {
+        if (event.getEffectInstance() != null) {
+            handleWingEffect(event.getEntity(), event.getEffectInstance().getEffect(), true);
+        }
+    }
+
+    /**
+     * 效果到期：效果自然结束时，把对应翅膀出队。
+     */
+    @SubscribeEvent
+    public static void onEffectExpired(MobEffectEvent.Expired event) {
+        if (event.getEffectInstance() != null) {
+            handleWingEffect(event.getEntity(), event.getEffectInstance().getEffect(), false);
+        }
+    }
+
+    /**
+     * 效果被移除（牛奶 / 指令 / 死亡等）：把对应翅膀出队。
+     */
+    @SubscribeEvent
+    public static void onEffectRemoved(MobEffectEvent.Remove event) {
+        handleWingEffect(event.getEntity(), event.getEffect(), false);
+    }
+
+    /**
+     * 统一处理效果变化：入队或出队对应翅膀，并同步 + 持久化。
+     */
+    private static void handleWingEffect(LivingEntity entity, MobEffect effect, boolean add) {
+        if (!(entity instanceof ServerPlayer player) || !(effect instanceof WingEffect wingEffect)) {
+            return;
+        }
+
+        WingsCapability.get(player).ifPresent(cap -> {
+            boolean changed = add ? cap.addWing(wingEffect.getWingId()) : cap.removeWing(wingEffect.getWingId());
+
+            if (changed) {
+                WingsCapability.syncPersistentData(player);
+                IcarusMeshNetworking.sendToTrackingAndSelf(new SetWingsPacket(player.getId(), cap.getWingQueue()),
+                        player);
+            }
+        });
     }
 }

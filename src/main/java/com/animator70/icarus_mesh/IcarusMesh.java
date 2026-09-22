@@ -2,6 +2,7 @@ package com.animator70.icarus_mesh;
 
 // 我的类
 import com.animator70.icarus_mesh.config.WingsConfig;
+import com.animator70.icarus_mesh.init.WingEffects;
 import com.animator70.icarus_mesh.init.WingsRegistry;
 import com.animator70.icarus_mesh.network.IcarusMeshNetworking;
 
@@ -25,8 +26,9 @@ public class IcarusMesh {
 
     // 构造器
     public IcarusMesh(FMLJavaModLoadingContext context) {
-        // 初始化翅膀注册表与网络通道
+        // 初始化翅膀注册表、效果注册表与网络通道
         WingsRegistry.init();
+        WingEffects.init(context.getModEventBus());
         IcarusMeshNetworking.init();
         // 注册渲染配置（COMMON 类型，全局 config/ 目录，非每存档；值由登录时手动同步给客户端）
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, WingsConfig.SPEC);
