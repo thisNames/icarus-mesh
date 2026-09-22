@@ -13,21 +13,21 @@ import net.minecraft.resources.ResourceLocation;
  * WingType
  */
 public enum WingType {
-    // 羽翼 FeatheredWingsModel
+    // 1 羽翼 FeatheredWingsModel
     FEATHERED("feathered"),
-    // 龙翼 LeatherWingsModel
+    // 2 龙翼 LeatherWingsModel
     DRAGON("dragon"),
-    // 机械羽翼 FeatheredWingsModel（同一套）
+    // 3 机械羽翼 FeatheredWingsModel（同一套）
     MECHANICAL_FEATHERED("mechanical_feathered"),
-    // 机械皮革翼 LeatherWingsModel（同一套）
+    // 4 机械皮革翼 LeatherWingsModel（同一套）
     MECHANICAL_LEATHER("mechanical_leather"),
-    // 光翼 LightWingsModel
+    // 5 光翼 LightWingsModel
     LIGHT("light"),
-    // 芙兰 FlandresWingsModel
+    // 6 芙兰 FlandresWingsModel
     FLANDRES("flandres"),
-    // Discord DiscordsWingsModel
+    // 7 Discord DiscordsWingsModel
     DISCORDS("discords"),
-    // Zanza ZanzasWingsModel
+    // 8 Zanza ZanzasWingsModel
     ZANZAS("zanzas");
 
     // 翅膀纹理路径

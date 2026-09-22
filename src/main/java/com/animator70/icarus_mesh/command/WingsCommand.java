@@ -35,48 +35,57 @@ public class WingsCommand {
 
                 // 入队
                 .then(Commands.literal("set")
-
                         .then(Commands.argument("wing", StringArgumentType.word())
                                 .suggests((ctx, builder) -> SharedSuggestionProvider
                                         .suggest(WingsRegistry.all().stream().map(WingDefinition::id), builder))
-                                .executes(
-                                        ctx -> setWing(ctx.getSource(), ctx.getSource().getPlayerOrException(),
-                                                StringArgumentType.getString(ctx, "wing")))
+                                .executes(ctx -> setWing(
+                                        ctx.getSource(),
+                                        ctx.getSource().getPlayerOrException(),
+                                        StringArgumentType.getString(ctx, "wing")))
 
                                 .then(Commands.argument("target", EntityArgument.player())
-                                        .executes(
-                                                ctx -> setWing(ctx.getSource(), EntityArgument.getPlayer(ctx, "target"),
-                                                        StringArgumentType.getString(ctx, "wing"))))))
+                                        .executes(ctx -> setWing(
+                                                ctx.getSource(),
+                                                EntityArgument.getPlayer(ctx, "target"),
+                                                StringArgumentType.getString(ctx, "wing"))))))
 
                 // 清空队列
                 .then(Commands.literal("clear")
-                        .executes(ctx -> clearWing(ctx.getSource(), ctx.getSource().getPlayerOrException()))
+                        .executes(ctx -> clearWing(
+                                ctx.getSource(),
+                                ctx.getSource().getPlayerOrException()))
+
                         .then(Commands.argument("target", EntityArgument.player())
-                                .executes(
-                                        ctx -> clearWing(ctx.getSource(),
-                                                EntityArgument.getPlayer(ctx, "target")))))
+                                .executes(ctx -> clearWing(
+                                        ctx.getSource(),
+                                        EntityArgument.getPlayer(ctx, "target")))))
 
                 // 出列
                 .then(Commands.literal("remove")
                         .then(Commands.argument("wing", StringArgumentType.word())
                                 .suggests((ctx, builder) -> SharedSuggestionProvider
                                         .suggest(WingsRegistry.all().stream().map(WingDefinition::id), builder))
-                                .executes(
-                                        ctx -> removeWing(ctx.getSource(), ctx.getSource().getPlayerOrException(),
-                                                StringArgumentType.getString(ctx, "wing")))
+                                .executes(ctx -> removeWing(
+                                        ctx.getSource(),
+                                        ctx.getSource().getPlayerOrException(),
+                                        StringArgumentType.getString(ctx, "wing")))
+
                                 .then(Commands.argument("target", EntityArgument.player())
-                                        .executes(
-                                                ctx -> removeWing(ctx.getSource(),
-                                                        EntityArgument.getPlayer(ctx, "target"),
-                                                        StringArgumentType.getString(ctx, "wing"))))))
+                                        .executes(ctx -> removeWing(
+                                                ctx.getSource(),
+                                                EntityArgument.getPlayer(ctx, "target"),
+                                                StringArgumentType.getString(ctx, "wing"))))))
 
                 // 获取首列
                 .then(Commands.literal("get")
-                        .executes(ctx -> getWing(ctx.getSource(), ctx.getSource().getPlayerOrException()))
+                        .executes(ctx -> getWing(
+                                ctx.getSource(),
+                                ctx.getSource().getPlayerOrException()))
+
                         .then(Commands.argument("target", EntityArgument.player())
-                                .executes(
-                                        ctx -> getWing(ctx.getSource(),
-                                                EntityArgument.getPlayer(ctx, "target")))))
+                                .executes(ctx -> getWing(
+                                        ctx.getSource(),
+                                        EntityArgument.getPlayer(ctx, "target")))))
 
                 // 列出所有可用翅膀
                 .then(Commands.literal("list")
@@ -137,12 +146,10 @@ public class WingsCommand {
             IcarusMeshNetworking.sendToTrackingAndSelf(new SetWingsPacket(target.getId(), cap.getWingQueue()), target);
 
             if (removed) {
-                source.sendSuccess(
-                        () -> Component.literal("已从 " +
-                                target.getName().getString()
-                                + " 的队列移除翅膀 " +
-                                wingId),
-                        true);
+                source.sendSuccess(() -> Component.literal("已从 " +
+                        target.getName().getString() +
+                        " 的队列移除翅膀 " +
+                        wingId), true);
             } else {
                 source.sendSuccess(() -> Component.literal("翅膀 " +
                         wingId +
