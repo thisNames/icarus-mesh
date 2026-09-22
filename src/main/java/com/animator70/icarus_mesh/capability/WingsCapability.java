@@ -156,6 +156,7 @@ public class WingsCapability {
     /**
      * 给每个 Player 实体动态附加翅膀 Capability（Forge 能力系统的接入点）
      */
+    @SuppressWarnings("removal")
     public static void attach(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
             event.addCapability(new ResourceLocation(IcarusMesh.MODID, "wings"), new Provider());

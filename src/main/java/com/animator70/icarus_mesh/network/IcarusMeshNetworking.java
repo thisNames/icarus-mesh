@@ -26,6 +26,7 @@ public class IcarusMeshNetworking {
     /**
      * 网络通道：版本号「1」用于服务端/客户端握手校验，不一致则拒绝通信
      */
+    @SuppressWarnings("removal")
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(IcarusMesh.MODID, "main"),
             () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals,

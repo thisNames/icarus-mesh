@@ -31,6 +31,7 @@ public class IcarusMeshClient {
         event.registerLayerDefinition(IcarusMeshModels.ZANZAS, ZanzasWingsModel::getLayerDefinition);
     }
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
         for (String skin : event.getSkins()) {

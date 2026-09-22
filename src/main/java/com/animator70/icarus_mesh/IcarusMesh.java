@@ -25,6 +25,7 @@ public class IcarusMesh {
     public static final String MODID = "icarus_mesh";
 
     // 构造器
+    @SuppressWarnings("removal")
     public IcarusMesh(FMLJavaModLoadingContext context) {
         // 初始化翅膀注册表、效果注册表与网络通道
         WingsRegistry.init();
@@ -35,6 +36,7 @@ public class IcarusMesh {
     }
 
     // 资源路径构造器
+    @SuppressWarnings("removal")
     public static ResourceLocation id(String path) {
         // 将路径拼接到模组 ID 前缀
         return new ResourceLocation(MODID, path);
